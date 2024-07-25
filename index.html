@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.7/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <p>当前时间: {{ currentTime }}</p>
+      <p>
+        今天吃: <i><u>{{ message }}</u></i>
+      </p>
+    </div>
+
+    <script>
+      const compareDates = (date1, date2) => {
+        return Math.abs(moment(date2).diff(moment(date1), "days"));
+      };
+
+      const now = moment();
+      const getCurrentTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
+      const targetTime = moment("2024-07-01");
+      const currentTime = getCurrentTime();
+
+      new Vue({
+        el: "#root",
+        data: {
+          currentTime: getCurrentTime(),
+          message: "",
+        },
+        mounted() {
+          this.updateTime();
+          this.updateMessage();
+        },
+        methods: {
+          updateTime() {
+            this.intervalId = setInterval(() => {
+              this.currentTime = getCurrentTime();
+            }, 1000);
+          },
+          updateMessage() {
+            const durationDay = compareDates(targetTime, moment());
+            this.message = durationDay % 2 === 0 ? "一颗" : "一颗半";
+          },
+        },
+        beforeDestroy() {
+          clearInterval(this.intervalId);
+        },
+      });
+    </script>
+  </body>
+</html>
