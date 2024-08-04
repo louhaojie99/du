@@ -16,15 +16,19 @@
     </div>
 
     <script>
-      const compareDates = (date1, date2) => {
-        return Math.abs(moment(date2).diff(moment(date1), "days"));
-      };
-
       const now = moment();
-      const getCurrentTime = () => moment().format("YYYY-MM-DD HH:mm:ss");
-      const targetTime = moment("2024-07-01");
-      const currentTime = getCurrentTime();
+      const startTime = moment("2024-07-01");
 
+      function getCurrentTime() {
+        return moment().format("YYYY-MM-DD HH:mm:ss");
+      }
+
+      function compareDates(date1, date2) {
+        return Math.abs(moment(date2).diff(moment(date1), "days"));
+      }
+    </script>
+
+    <script>
       new Vue({
         el: "#root",
         data: {
@@ -42,7 +46,7 @@
             }, 1000);
           },
           updateMessage() {
-            const durationDay = compareDates(targetTime, moment());
+            const durationDay = compareDates(startTime, moment());
             this.message = durationDay % 2 === 0 ? "一颗" : "一颗半";
           },
         },
